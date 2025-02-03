@@ -29,18 +29,18 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            position: absolute;
         }
         .si {
             background-color: #ff69b4;
             color: white;
+            position: relative;
+            z-index: 10;
         }
         .no {
             background-color: #ccc;
             color: black;
             position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
             transition: left 0.2s, top 0.2s;
         }
         .mensaje {
@@ -65,7 +65,7 @@
             height: 20px;
             background-color: red;
             transform: rotate(-45deg);
-            animation: flotar 4s linear infinite;
+            animation: flotar 6s linear infinite;
         }
         .corazon:before, .corazon:after {
             content: '';
@@ -99,15 +99,14 @@
     </div>
 
     <div class="mensaje" id="mensaje">
-        Sabía que dirías que sí, my love ❤️<br>
-        사랑해 (Te amo en coreano)
+        Sabía que dirías que sí, my love 🫰🏽<br>
+        사랑해 (Te amo en coreano❤️)
     </div>
 
     <div class="corazones"></div>
 
     <audio autoplay loop>
         <source src="die_with_a_smile.mp3" type="audio/mp3">
-        Tu navegador no soporta audio HTML5.
     </audio>
 
     <script>
@@ -118,6 +117,16 @@
 
         function moverBoton(event) {
             if (event) event.preventDefault(); // Previene errores en móviles
+            let boton = document.getElementById("botonNo");
+            let maxX = window.innerWidth - boton.clientWidth;
+            let maxY = window.innerHeight - boton.clientHeight;
+            let x = Math.random() * maxX;
+            let y = Math.random() * maxY;
+            boton.style.left = x + "px";
+            boton.style.top = y + "px";
+        }
+
+        function posicionarBotonNo() {
             let boton = document.getElementById("botonNo");
             let maxX = window.innerWidth - boton.clientWidth;
             let maxY = window.innerHeight - boton.clientHeight;
@@ -138,8 +147,6 @@
                 setTimeout(() => corazon.remove(), 4000);
             }
         }
-        setInterval(crearCorazones, 500);
-    </script>
 
-</body>
-</html>
+        window.onload = function() {
+            posicionarBot
