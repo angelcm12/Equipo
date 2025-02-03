@@ -17,14 +17,6 @@
             color: #d63384;
             font-size: 2.2em;
         }
-        .corazones {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-        }
         .botones {
             margin-top: 20px;
             position: relative;
@@ -57,6 +49,44 @@
             color: #d63384;
             margin-top: 20px;
         }
+        /* Animación de corazones */
+        .corazones {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .corazon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: flotar 4s linear infinite;
+        }
+        .corazon:before, .corazon:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .corazon:before {
+            top: -10px;
+            left: 0;
+        }
+        .corazon:after {
+            left: 10px;
+            top: 0;
+        }
+        @keyframes flotar {
+            0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -77,6 +107,7 @@
 
     <audio autoplay loop>
         <source src="die_with_a_smile.mp3" type="audio/mp3">
+        Tu navegador no soporta audio HTML5.
     </audio>
 
     <script>
@@ -86,7 +117,7 @@
         }
 
         function moverBoton(event) {
-            event.preventDefault(); // Previene problemas en móviles
+            if (event) event.preventDefault(); // Previene errores en móviles
             let boton = document.getElementById("botonNo");
             let maxX = window.innerWidth - boton.clientWidth;
             let maxY = window.innerHeight - boton.clientHeight;
@@ -95,6 +126,19 @@
             boton.style.left = x + "px";
             boton.style.top = y + "px";
         }
+
+        function crearCorazones() {
+            for (let i = 0; i < 10; i++) {
+                let corazon = document.createElement("div");
+                corazon.classList.add("corazon");
+                corazon.style.left = Math.random() * window.innerWidth + "px";
+                corazon.style.top = Math.random() * window.innerHeight + "px";
+                corazon.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                document.querySelector(".corazones").appendChild(corazon);
+                setTimeout(() => corazon.remove(), 4000);
+            }
+        }
+        setInterval(crearCorazones, 500);
     </script>
 
 </body>
