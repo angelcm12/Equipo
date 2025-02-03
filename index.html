@@ -17,10 +17,38 @@
             color: #d63384;
             font-size: 2.2em;
         }
+        .corazon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: flotar 4s infinite linear;
+        }
+        .corazon:before, .corazon:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .corazon:before {
+            top: -10px;
+            left: 0;
+        }
+        .corazon:after {
+            left: 10px;
+            top: 0;
+        }
         .botones {
             margin-top: 20px;
             position: relative;
             display: inline-block;
+        }
+         @keyframes flotar {
+            0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+            100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
         }
         button {
             font-size: 1.5em;
@@ -43,49 +71,17 @@
             position: absolute;
             transition: left 0.2s, top 0.2s;
         }
-        .mensaje {
+          .mensaje {
             display: none;
             font-size: 2em;
             color: #d63384;
             margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
         }
-        /* Animación de corazones */
-        .corazones {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .corazon {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            transform: rotate(-45deg);
-            animation: flotar 6s linear infinite;
-        }
-        .corazon:before, .corazon:after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            border-radius: 50%;
-        }
-        .corazon:before {
-            top: -10px;
-            left: 0;
-        }
-        .corazon:after {
-            left: 10px;
-            top: 0;
-        }
-        @keyframes flotar {
-            0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
-            100% { transform: translateY(-800px) rotate(-45deg); opacity: 0; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -95,18 +91,19 @@
 
     <div class="botones">
         <button class="si" onclick="mostrarMensaje()">Sí</button>
-        <button class="no" id="botonNo" onmouseover="moverBoton()" ontouchstart="moverBoton(event)">No</button>
+        <button class="no" id="botonNo" onmouseover="moverBoton()" ontouchstart="moverBoton()">No</button>
     </div>
 
     <div class="mensaje" id="mensaje">
-        Sabía que dirías que sí, my love 🫰🏽<br>
-        사랑해 (Te amo en coreano❤️)
+        Sabía que dirías que sí, my love ❤️<br>
+        사랑해 (Te amo en coreano)
     </div>
 
     <div class="corazones"></div>
 
     <audio autoplay loop>
         <source src="die_with_a_smile.mp3" type="audio/mp3">
+        Tu navegador no soporta audio HTML5.
     </audio>
 
     <script>
@@ -115,19 +112,16 @@
             mensaje.style.display = "block";
         }
 
-        function moverBoton(event) {
-            if (event) event.preventDefault(); // Previene errores en móviles
+        function moverBoton() {
             let boton = document.getElementById("botonNo");
-            let maxX = window.innerWidth - boton.clientWidth;
-            let maxY = window.innerHeight - boton.clientHeight;
-            let x = Math.random() * maxX;
-            let y = Math.random() * maxY;
+            let x = Math.random() * (window.innerWidth - 100);
+            let y = Math.random() * (window.innerHeight - 100);
             boton.style.left = x + "px";
             boton.style.top = y + "px";
         }
 
         function posicionarBotonNo() {
-            let boton = document.getElementById("botonNo");
+            let boton = document.getElementById("No");
             let maxX = window.innerWidth - boton.clientWidth;
             let maxY = window.innerHeight - boton.clientHeight;
             let x = Math.random() * maxX;
@@ -137,16 +131,22 @@
         }
 
         function crearCorazones() {
-            for (let i = 0; i < 10; i++) {
+            const cantidad = 20;
+            for (let i = 0; i < cantidad; i++) {
                 let corazon = document.createElement("div");
                 corazon.classList.add("corazon");
                 corazon.style.left = Math.random() * window.innerWidth + "px";
                 corazon.style.top = Math.random() * window.innerHeight + "px";
-                corazon.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                corazon.style.animationDuration = Math.random() * 3 + 2 + "s";
                 document.querySelector(".corazones").appendChild(corazon);
-                setTimeout(() => corazon.remove(), 4000);
+                setTimeout(() => { corazon.remove(); }, 4000);
             }
         }
+        setInterval(crearCorazones, 500);
+    </scripts>
 
         window.onload = function() {
             posicionarBot
+
+</body>
+</html>
